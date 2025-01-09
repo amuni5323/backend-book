@@ -22,7 +22,7 @@ app.use(express.json());
 app.use(cors()); 
 
 let corsOptions = {
-    origin : ['https://asb-frontend1.vercel.app/'],
+    origin : ['https://asb-frontend1-vjy2.vercel.app/'],
  }
  
  app.use(cors(corsOptions))
@@ -52,7 +52,7 @@ mongoose
     });
     app.use(
         cors({
-          origin: 'https://asb-frontend1.vercel.app', 
+          origin: 'https://asb-frontend1-vjy2.vercel.app/', 
           methods: ['GET', 'POST', 'PUT', 'DELETE'], 
           credentials: true,
         })
