@@ -36,7 +36,7 @@ console.log("user id",req.user.id)
 });
 
 // GET / (Get all books for logged-in user)
-router.get('/books', authenticate, async (req, res) => {
+router.get('/', authenticate, async (req, res) => {
   try {
     console.log("executing..")
     const books = await Book.find({ userId: req.user.id }); 
