@@ -12,7 +12,7 @@ const app = express();
 
 // CORS configuration
 let corsOptions = {
-  origin: "https:/asb-frontend1.vercel.app/", // Your frontend's URL
+  origin: "https://asb-frontend1.vercel.app", // Remove trailing slash
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials
 };
@@ -24,7 +24,6 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-
 
 // Root route
 app.get("/", (req, res) => {
