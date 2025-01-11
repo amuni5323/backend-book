@@ -12,7 +12,7 @@ const app = express();
 
 // CORS configuration
 let corsOptions = {
-  origin: "https://asb-frontend1.vercel.app/", // Your frontend's URL
+  origin: "https:/asb-frontend1.vercel.app/", // Your frontend's URL
   methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
   credentials: true, // Allow credentials
 };
