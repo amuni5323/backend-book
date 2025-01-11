@@ -7,18 +7,25 @@ import booksRoutes from "./routes/booksRoutes.js";
 import userRoute from "./routes/userRoute.js";
 import { PORT, mongoDBURL } from "./Config.js";
 
-// Initialize the express app
 const app = express();
 
 // CORS configuration
 let corsOptions = {
-  origin: "https://asb-frontend1.vercel.app", // Remove trailing slash
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-  credentials: true, // Allow credentials
+  origin: (origin, callback) => {
+    const allowedOrigins = ["https://asb-frontend1.vercel.app"];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
 };
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // Middleware setup
 app.use(express.json({ limit: "50mb" }));
