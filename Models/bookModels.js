@@ -1,14 +1,14 @@
-import mongoose from "mongoose";
+// bookModels.js (Mongoose schema)
 
- const bookSchema = mongoose.Schema({
-    title:{type:String, required:true},
-    author:{type:String, required:true},
-    publishYear:{type:Number, required:true},
-    image:{ type:String, required:false,},
-    userId: { type: String, required: true },
- }, { timestamps:true});
+import mongoose from 'mongoose';
 
+const bookSchema = new mongoose.Schema({
+  title: { type: String, required: true, index:true },
+  author: { type: String, required: true },
+  publishYear: { type: Number, required: true },
+  image: { type: String, required: true },  // Base64 or URL image
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+}, { timestamps: true });
 
- const Book= mongoose.model('Book', bookSchema)
- export default Book
-//  book model
+const Book = mongoose.model('Book', bookSchema);
+export default Book;
