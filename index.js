@@ -10,18 +10,25 @@ import { PORT, mongoDBURL } from "./Config.js";
 const app = express();
 
 // CORS configuration
-let corsOptions = {
-  origin: (origin, callback) => {
-    const allowedOrigins = ["https://asb-frontend1.vercel.app/"];
+import cors from "cors";
+
+// Update the allowed origins
+const allowedOrigins = ["https://asb-frontend1.vercel.app"];
+app.use(cors({
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
-};
+}));
+
+// Handle preflight requests
+app.options("*", cors());
+
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
