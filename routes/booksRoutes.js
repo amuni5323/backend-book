@@ -36,9 +36,9 @@ router.post('/', authenticate, async (req, res) => {
 // GET all books for logged-in user
 router.get('/', authenticate, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-    const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
-    const skip = (page - 1) * limit;
+    // const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    // const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
+    // const skip = (page - 1) * limit;
 
 
 
