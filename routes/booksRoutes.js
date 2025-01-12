@@ -42,8 +42,7 @@ router.get('/', authenticate, async (req, res) => {
 
 
 
-    const books = await Book.find({ userId: req.user.id }).skip(skip).limit(limit);
-
+    const books = await Book.find({ userId: req.user.id }).skip(page * limit).limit(limit);;
     
     return res.status(200).json({ count: books.length, data: books, page,
       limit, });
@@ -122,4 +121,4 @@ router.delete('/:id', authenticate, async (req, res) => {
   }
 });
 
-export default router;
+export default router
