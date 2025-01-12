@@ -9,19 +9,17 @@ router.post('/', authenticate, async (req, res) => {
   try {
     const { title, author, publishYear, image } = req.body;
 
-    // Validate required fields
     if (!title || !author || !publishYear || !image) {
       return res.status(400).send({
         message: 'All fields are required: title, author, publishYear, and image (Base64)',
       });
     }
 
-    // Construct the new book object
     const newBook = {
       title,
       author,
       publishYear,
-      image, // Store Base64 image directly
+      image,
       userId: req.user.id,
     };
 
@@ -36,22 +34,22 @@ router.post('/', authenticate, async (req, res) => {
 // GET all books for logged-in user
 router.get('/', authenticate, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-    const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
-
-
 
     const books = await Book.find({ userId: req.user.id }).skip(skip).limit(limit);
 
-    
-    return res.status(200).json({ count: books.length, data: books, page,
-      limit, });
+    return res.status(200).json({ count: books.length, data: books, page, limit });
   } catch (error) {
     console.error(error.message);
     res.status(500).send({ message: error.message });
   }
 });
+
+// Additional routes omitted for brevity
+
+
 
 // GET a single book by ID
 router.get('/:id', authenticate, async (req, res) => {
