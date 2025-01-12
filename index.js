@@ -12,7 +12,7 @@ const app = express();
 // CORS configuration
 let corsOptions = {
   origin: (origin, callback) => {
-    const allowedOrigins = ["https://asb-frontend1.vercel.app"];
+    const allowedOrigins = ["https://asb-frontend1.vercel.app/books"];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
