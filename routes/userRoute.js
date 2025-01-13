@@ -34,7 +34,7 @@ router.post('/SignUp', async(request, response) =>{
 })
 
 //route for user login
-router.post('/login', async(request, response) =>{
+router.post('/Login', async(request, response) =>{
     try{
         const {username, password} =request.body;
 

@@ -11,9 +11,14 @@ router.post('/', authenticate, async (req, res) => {
 
     // Validate required fields
     if (!title || !author || !publishYear || !image) {
-      return res.status(400).send({
+      return res.status(400).json({
         message: 'All fields are required: title, author, publishYear, and image (Base64)',
       });
+    }
+
+    // Validate publishYear as a number
+    if (isNaN(publishYear)) {
+      return res.status(400).json({ message: 'Publish year must be a valid number' });
     }
 
     // Construct the new book object
@@ -26,29 +31,30 @@ router.post('/', authenticate, async (req, res) => {
     };
 
     const book = await Book.create(newBook);
-    return res.status(201).send(book);
+    return res.status(201).json(book);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: error.message });
+    console.error('Error creating book:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
 // GET all books for logged-in user
 router.get('/', authenticate, async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
-    const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
+    const page = parseInt(req.query.page, 10) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit, 10) || 10; // Default to limit 10
     const skip = (page - 1) * limit;
 
-
-
-    const books = await Book.find({ userId: req.user.id }).skip(page * limit).limit(limit);;
-    
-    return res.status(200).json({ count: books.length, data: books, page,
-      limit, });
+    const books = await Book.find({ userId: req.user.id }).skip(skip).limit(limit);
+    return res.status(200).json({
+      count: books.length,
+      data: books,
+      page,
+      limit,
+    });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: error.message });
+    console.error('Error fetching books:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -60,13 +66,13 @@ router.get('/:id', authenticate, async (req, res) => {
     const book = await Book.findOne({ _id: id, userId: req.user.id });
 
     if (!book) {
-      return res.status(404).send({ message: 'Book not found' });
+      return res.status(404).json({ message: 'Book not found' });
     }
 
-    res.status(200).send(book);
+    return res.status(200).json(book);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: error.message });
+    console.error('Error fetching book:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -76,14 +82,10 @@ router.put('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     const { title, author, publishYear, image } = req.body;
 
-    const updatedBook = {
-      title,
-      author,
-      publishYear,
-    };
+    const updatedBook = { title, author, publishYear };
 
     if (image) {
-      updatedBook.image = image; // Update the Base64 image if provided
+      updatedBook.image = image; // Update Base64 image if provided
     }
 
     const book = await Book.findOneAndUpdate(
@@ -93,13 +95,13 @@ router.put('/:id', authenticate, async (req, res) => {
     );
 
     if (!book) {
-      return res.status(404).send({ message: 'Book not found' });
+      return res.status(404).json({ message: 'Book not found' });
     }
 
-    res.status(200).send(book);
+    return res.status(200).json(book);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: error.message });
+    console.error('Error updating book:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -111,14 +113,14 @@ router.delete('/:id', authenticate, async (req, res) => {
     const book = await Book.findOneAndDelete({ _id: id, userId: req.user.id });
 
     if (!book) {
-      return res.status(404).send({ message: 'Book not found' });
+      return res.status(404).json({ message: 'Book not found' });
     }
 
-    res.status(200).send({ message: 'Book deleted successfully' });
+    return res.status(200).json({ message: 'Book deleted successfully' });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: error.message });
+    console.error('Error deleting book:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-export default router
+export default router;
