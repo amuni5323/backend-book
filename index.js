@@ -8,10 +8,15 @@ import userRoute from "./routes/userRoute.js";
 import { PORT, mongoDBURL } from "./Config.js";
 
 const app = express();
+app.use((req, res, next) => {
+  console.log(`Request made to: ${req.url} with method: ${req.method}`);
+  next();
+});
 
 // CORS configuration
 let corsOptions = {
   origin: (origin, callback) => {
+    console.log("Request Origin:", origin);
     const allowedOrigins = ["https://asb-frontend1.vercel.app"];
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
