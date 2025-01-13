@@ -16,7 +16,7 @@ router.post('/', authenticate, async (req, res) => {
         message: 'All fields are required: title, author, publishYear, and image (Base64)',
       });
     }
-    console.log("req",req.user)
+    console.log("req", req.user)
 
     // Construct the new book object
     const newBook = {
@@ -54,7 +54,7 @@ console.log("token",token)
     const skip = (page - 1) * limit;
 
 
-const books = await Book.find().skip(skip).limit(limit);;
+const books = await Book.find( req.user.id).skip(skip).limit(limit);;
     
     return res.status(200).json({ count: books.length, data: books, page,
       limit, });
