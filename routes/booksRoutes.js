@@ -45,7 +45,7 @@ router.get('/', authenticate, async (req, res) => {
 
    const secretKey = '123454dfngmdffbdfmgnmdfgnmdfndfn!kfejrkewjk';
     const decoded = jwt.verify(token, secretKey);
-    console.log(decoded)
+    console.log(decoded.userid)
 
 console.log("token",token)
 
@@ -54,7 +54,7 @@ console.log("token",token)
     const skip = (page - 1) * limit;
 
 
-const books = await Book.find( req.user.id).skip(skip).limit(limit);;
+const books = await Book.find( { userId:decoded.userid}).skip(skip).limit(limit);;
     
     return res.status(200).json({ count: books.length, data: books, page,
       limit, });
