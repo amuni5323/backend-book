@@ -1,4 +1,5 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import Book from '../Models/bookModels.js';
 import authenticate from '../middleware/authenticate.js';
 
@@ -10,11 +11,12 @@ router.post('/', authenticate, async (req, res) => {
     const { title, author, publishYear, image } = req.body;
 
     // Validate required fields
-    if (!title || !author || !publishYear || !image) {
+    if (!title || !author || !publishYear) {
       return res.status(400).send({
         message: 'All fields are required: title, author, publishYear, and image (Base64)',
       });
     }
+    console.log("req",req.user)
 
     // Construct the new book object
     const newBook = {
@@ -37,14 +39,22 @@ router.post('/', authenticate, async (req, res) => {
 router.get('/', authenticate, async (req, res) => {
   try {
     console.log("Inside books route"); 
-    
+
+    const token = req.headers
+  ['authorization']?.split(' ')[1];
+
+   const secretKey = '123454dfngmdffbdfmgnmdfgnmdfndfn!kfejrkewjk';
+    const decoded = jwt.verify(token, secretKey);
+    console.log(decoded)
+
+console.log("token",token)
+
     const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
     const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
     const skip = (page - 1) * limit;
 
 
-
-    const books = await Book.find({ userId: req.user.id }).skip(skip).limit(limit);;
+const books = await Book.find().skip(skip).limit(limit);;
     
     return res.status(200).json({ count: books.length, data: books, page,
       limit, });
