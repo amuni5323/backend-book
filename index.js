@@ -1,11 +1,10 @@
-import express from "express";
-import http from "http";
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
+import express from "express";
+import mongoose from "mongoose";
+import { PORT, mongoDBURL } from "./Config.js";
 import booksRoutes from "./routes/booksRoutes.js";
 import userRoute from "./routes/userRoute.js";
-import { PORT, mongoDBURL } from "./Config.js";
 
 const app = express();
 app.use((req, res, next) => {
@@ -13,24 +12,24 @@ app.use((req, res, next) => {
   next();
 });
 
-// CORS configuration
-let corsOptions = {
-  origin: (origin, callback) => {
-    console.log("Request Origin:", origin);
-    const allowedOrigins = ["https://asb-frontend1.vercel.app"];
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-};
+// // CORS configuration
+// let corsOptions = {
+//   origin: (origin, callback) => {
+//     console.log("Request Origin:", origin);
+//     const allowedOrigins = ["https://asb-frontend1.vercel.app"];
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+//   credentials: true,
+// };
 
 // Apply CORS middleware
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // Handle preflight requests
+app.use(cors("*"));
+// app.options("*", cors(corsOptions)); // Handle preflight requests
 
 // Middleware setup
 app.use(express.json({ limit: "50mb" }));

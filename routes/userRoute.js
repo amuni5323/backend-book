@@ -52,7 +52,7 @@ router.post('/Login', async(request, response) =>{
             return response.status(401).json({message: 'Invalid password'});
         }
         //Genarate JWT token with userid included
-        const token = jwt.sign({userid: user._id, isLogged: true}, 'your_secret_key', { expiresIn: '1h' });
+        const token = jwt.sign({userid: user._id, isLogged: true}, '123454dfngmdffbdfmgnmdfgnmdfndfn!kfejrkewjk', { expiresIn: '1h' });
         return response.status(200).json({token, username: user.username});
     } catch(error){
         console.log(error.message);

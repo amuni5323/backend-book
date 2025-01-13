@@ -12,9 +12,11 @@ const authenticate = async (req, res, next) => {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
   try {
-    const secretKey = process.env.JWT_SECRET || 'your_secret_key';
+    const secretKey = '123454dfngmdffbdfmgnmdfgnmdfndfn!kfejrkewjk';
     const decoded = jwt.verify(token, secretKey);
-    req.user = await User.findById(decoded?.userId);
+    console.log(decoded)
+    req.user = await User.findById(decoded?.userid);
+    console.log(req.user)
 
     if (!req.user) {
       return res.status(404).json({ message: 'User not found.' });
