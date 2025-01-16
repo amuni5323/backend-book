@@ -44,7 +44,7 @@ router.post('/SignUp', async(request, response) =>{
 
 
         //  return response.status(201).json(newUser);
-        const confirmationLink = `http:/localhost:5173/confirm-email/${emailConfirmationToken}`;
+        const confirmationLink = `http:/https://asb-frontend1.vercel.app/confirm-email/${emailConfirmationToken}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
